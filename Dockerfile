@@ -18,6 +18,7 @@ RUN apt-get -y install python3-pip
 #RUN pip3 install awscli --upgrade --user
 RUN pip3 install awscli --upgrade
 
+# Install docker in container, so we can run docker build when building images
 RUN apt-get update && \
 apt-get -y install apt-transport-https \
     ca-certificates \
@@ -32,7 +33,12 @@ add-apt-repository \
 apt-get update && \
 apt-get -y install docker-ce
 RUN apt-get install -y docker-ce
+
+# Change docker group id in container to match docker group id on ecs instance
+# So /var/run/docker.sock works properly in container
 RUN groupmod -g 497 docker
+
+# Add jenkins user to group docker, so jenkins user can run docker commands
 RUN usermod -a -G docker jenkins
 
 RUN chown -R jenkins:jenkins /home/jenkins
