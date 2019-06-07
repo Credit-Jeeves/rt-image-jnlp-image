@@ -1,5 +1,5 @@
-This repo is for the building the image that builds images
-I.e. this container is run by the other image repo's, to build the images
+This repo is for building the image that builds images
+I.e. this container is run by the other image builder repo's
 
 Update JNLP image to latest
 

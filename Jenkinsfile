@@ -1,10 +1,16 @@
 pipeline {
-    agent any
+    agent {
+        label 'image-worker'
+    }
     stages {
         stage('Build Image') {
             steps {
-                sh 'yum -y install make'
                 sh 'make image_build'
+            }
+        }
+        stage('Publish Image') {
+            steps {
+                sh 'make region=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed "s/[a-z]$//"` publish'
             }
         }
     }
