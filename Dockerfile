@@ -23,6 +23,7 @@ RUN pip3 install awscli --upgrade
 RUN apt-get update && \
 apt-get -y install apt-transport-https \
     ca-certificates \
+    lsb-release \
     curl \
     gnupg2 \
     software-properties-common && \
@@ -35,9 +36,20 @@ apt-get update && \
 apt-get -y install docker-ce
 RUN apt-get install -y docker-ce
 
+RUN curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+RUN chmod +x /usr/bin/docker-compose
+
 # Change docker group id in container to match docker group id on ecs instance
 # So /var/run/docker.sock works properly in container
 RUN groupmod -g 497 docker
+
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+RUN lsb_release -a
+RUN apt-get update
+RUN apt-get install -y php7.2 php7.2-cli php7.2-common
+RUN apt-get install -y php7.2-curl php7.2-gd php7.2-json php7.2-mbstring php7.2-intl php7.2-mysql php7.2-xml php7.2-zip php7.2-bz2
+RUN php -v
 
 # Add jenkins user to group docker, so jenkins user can run docker commands
 RUN usermod -a -G docker jenkins
