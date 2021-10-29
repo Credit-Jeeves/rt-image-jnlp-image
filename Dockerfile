@@ -8,6 +8,7 @@ RUN apt-get install -y vim
 RUN apt-get install -y gcc
 RUN apt-get install -y make
 RUN apt-get install -y cmake
+RUN apt-get install -y wget
 
 RUN apt-get -y install zip
 RUN apt-get --yes --force-yes install unzip

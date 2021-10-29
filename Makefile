@@ -9,7 +9,7 @@ all: myrun
 # $ make publish version=1.0.0
 
 region ?= us-east-1
-aws_profile = rtdevelopment
+#aws_profile = rtdevelopment
 name = jnlp-image
 image_name = jenkins/jnlp-slave
 registry = 874727002155.dkr.ecr.us-east-1.amazonaws.com/rt-jenkins/master
@@ -17,8 +17,8 @@ version ?= latest
 
 ecr_login:
 	$(call blue, "Login to AWS ECR...")
-	eval `aws --region ${region} --profile ${aws_profile} ecr get-login --no-include-email`
-#	eval `aws ecr --region ${region} get-login --no-include-email`
+#	eval `aws --region ${region} --profile ${aws_profile} ecr get-login --no-include-email`
+	eval `aws ecr --region ${region} get-login --no-include-email`
 
 binary:
 	$(call blue, "Building binary ready for containerisation...")
