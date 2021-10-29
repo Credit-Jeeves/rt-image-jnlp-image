@@ -19,6 +19,11 @@ RUN apt-get -y install python3-pip
 #RUN pip3 install awscli --upgrade --user
 RUN pip3 install awscli --upgrade
 
+# Install AWS ECS CLI
+RUN curl -Lo /usr/local/bin/ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-latest
+RUN chmod +x /usr/local/bin/ecs-cli
+RUN ln -s /usr/local/bin/ecs-cli /usr/bin/ecs-cli
+
 # Install docker in container, so we can run docker build when building images
 RUN apt-get update && \
 apt-get -y install apt-transport-https \
@@ -36,6 +41,7 @@ apt-get update && \
 apt-get -y install docker-ce
 RUN apt-get install -y docker-ce
 
+# Install docker-compose
 RUN curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
 RUN chmod +x /usr/bin/docker-compose
 
@@ -43,6 +49,7 @@ RUN chmod +x /usr/bin/docker-compose
 # So /var/run/docker.sock works properly in container
 RUN groupmod -g 497 docker
 
+# Install php 7.x, not sure why I need this anymore
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 RUN lsb_release -a
