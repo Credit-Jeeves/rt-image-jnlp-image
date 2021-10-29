@@ -17,7 +17,7 @@ version ?= latest
 
 ecr_login:
 	$(call blue, "Login to AWS ECR...")
-#	eval `aws --profile ${aws_profile} ecr get-login --no-include-email`
+#	eval `aws --region ${region} --profile ${aws_profile} ecr get-login --no-include-email`
 	eval `aws ecr --region ${region} get-login --no-include-email`
 
 binary:
